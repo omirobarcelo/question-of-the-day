@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { createPersonsStore } from "$stores/persons.svelte";
     import { createQuestionsStore } from "$stores/questions.svelte";
+	import { translationStore } from "$stores/translate.svelte";
+	import Header from "./Header.svelte";
 
     const questionsStore = createQuestionsStore();
     let questionsValue = $state(questionsStore.questions.join(`\n`));
@@ -32,13 +34,15 @@
     }
 </style>
 
+<Header></Header>
+
 <div class="textareas">
-    <textarea class="textarea" bind:value={questionsValue} onchange={handleQuestionsChange}></textarea>
-    <textarea class="textarea" bind:value={personsValue} onchange={handlePersonsChange}></textarea>
+    <textarea class="textarea" placeholder={translationStore.t('placeholderQuestions')} bind:value={questionsValue} onchange={handleQuestionsChange}></textarea>
+    <textarea class="textarea" placeholder={translationStore.t('placeholderPersons')} bind:value={personsValue} onchange={handlePersonsChange}></textarea>
 </div>
 
-<button onclick={handleRandomize}>Randomize!</button>
+<button onclick={handleRandomize}>{translationStore.t('button')}</button>
 
 {#if randomizedPerson && randomizedQuestion}
-    <p>Tell us {randomizedPerson}: {randomizedQuestion}</p>
+    <p>{translationStore.t('prompt')} {randomizedPerson}, {randomizedQuestion}</p>
 {/if}
